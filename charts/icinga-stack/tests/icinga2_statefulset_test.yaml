@@ -891,3 +891,84 @@ tests:
                 path: "cert.crt"
               - key: "influxdb-key-key"
                 path: "cert.key"
+
+  - it: deploys an Icinga2 StatefulSet with extra env vars
+    values:
+      - required_values.yaml
+    set:
+      icinga2:
+        config:
+          ticket_salt:
+            value: "insecuresalt"
+        extraEnvVars:
+          - name: OTHER_ENV_VAR_FIRST
+            value: first
+          - name: OTHER_ENV_VAR_SECOND
+            value: second
+    release:
+      name: my-icinga
+    asserts:
+      - containsDocument:
+          kind: StatefulSet
+          apiVersion: apps/v1
+      - equal:
+          path: metadata.name
+          value: my-icinga-icinga2
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: OTHER_ENV_VAR_FIRST
+            value: first
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: OTHER_ENV_VAR_SECOND
+            value: second
+  
+  - it: deploys an Icinga2 StatefulSet with extra env from config map
+    values:
+      - required_values.yaml
+    set:
+      icinga2:
+        config:
+          ticket_salt:
+            value: "insecuresalt"
+        extraEnvVarsCM: "my-icinga-icinga2-env"
+    release:
+      name: my-icinga
+    asserts:
+      - containsDocument:
+          kind: StatefulSet
+          apiVersion: apps/v1
+      - equal:
+          path: metadata.name
+          value: my-icinga-icinga2
+      - contains:
+          path: spec.template.spec.containers[0].envFrom
+          content:
+            configMapRef:
+              name: my-icinga-icinga2-env
+
+  - it: deploys an Icinga2 StatefulSet with extra env from secrets
+    values:
+      - required_values.yaml
+    set:
+      icinga2:
+        config:
+          ticket_salt:
+            value: "insecuresalt"
+        extraEnvVarsSecret: "my-icinga-icinga2-env"
+    release:
+      name: my-icinga
+    asserts:
+      - containsDocument:
+          kind: StatefulSet
+          apiVersion: apps/v1
+      - equal:
+          path: metadata.name
+          value: my-icinga-icinga2
+      - contains:
+          path: spec.template.spec.containers[0].envFrom
+          content:
+            secretRef:
+              name: my-icinga-icinga2-env

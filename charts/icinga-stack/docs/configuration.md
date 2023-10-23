@@ -63,6 +63,9 @@ These values are used by the Icinga2 sub-chart. For configuration of Icinga2's d
 | `icinga2.image.tag` | Tag of the Icinga2 image | `string` | `2.13.7` |
 | `icinga2.image.pullPolicy` | Pull policy of the Icinga2 image | `string` | `IfNotPresent` |
 | `icinga2.imagePullSecrets` | Pull secrets of the Icinga2 image | `[]string` | `[]` |
+| `icinga2.extraEnvVars` | Array with extra environment variables to add to icinga2 node | `[]` |
+| `icinga2.extraEnvVarsCM` | Name of existing ConfigMap containing extra env vars for icinga2 node | `""` |
+| `icinga2.extraEnvVarsSecret` | Name of existing Secret containing extra env vars for icinga2 node | `""` |
 | `icinga2.nameOverride` | Name override of the Icinga2 deployment | `string` | `""` |
 | `icinga2.fullnameOverride` | Fullname override of the Icinga2 deployment | `string` | `""` |
 | `icinga2.service.type` | Type of the Icinga2 service | `string` | `ClusterIP` |

@@ -27,6 +27,10 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+#extraEnvVars: []
+#extraEnvVarsCM: ""
+#extraEnvVarsSecret: ""
+
 config:
   node_name: icinga2-master
   zone_name: master

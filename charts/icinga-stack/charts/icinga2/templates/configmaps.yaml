@@ -275,5 +275,4 @@ metadata:
   name: {{ include "icinga2.fullname" . }}-env
   labels:
     {{- include "icinga2.labels" . | nindent 4 }}
-data:
 {{- end -}}

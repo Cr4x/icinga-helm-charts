@@ -140,6 +140,9 @@ These values are used by the IcingaWeb2 sub-chart. For configuration of Icingawe
 | `icingaweb2.image.tag` | Tag of the IcingaWeb2 image | `string` | `2.11.4` |
 | `icingaweb2.image.pullPolicy` | Pull policy of the IcingaWeb2 image | `string` | `IfNotPresent` |
 | `icingaweb2.imagePullSecrets` | Pull secrets of the IcingaWeb2 image | `[]string` | `[]` |
+| `icingaweb2.extraEnvVars` | Array with extra environment variables to add to icingaweb2 node | `[]` |
+| `icingaweb2.extraEnvVarsCM` | Name of existing ConfigMap containing extra env vars for icingaweb2 node | `""` |
+| `icingaweb2.extraEnvVarsSecret` | Name of existing Secret containing extra env vars for icingaweb2 node | `""` |
 | `icingaweb2.nameOverride` | Name override of the IcingaWeb2 deployment | `string` | `""` |
 | `icingaweb2.fullnameOverride` | Fullname override of the IcingaWeb2 deployment | `string` | `""` |
 | `icingaweb2.service.type` | Type of the IcingaWeb2 service | `string` | `ClusterIP` |

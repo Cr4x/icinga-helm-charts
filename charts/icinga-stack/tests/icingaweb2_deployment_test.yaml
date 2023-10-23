@@ -204,3 +204,84 @@ tests:
     asserts:
       - failedTemplate:
           errorMessage: "director api user password not set. Set either .Values.global.api.users.director.password.value or .Values.global.api.users.credSecret and .Values.global.api.users.director.password.secretKey"
+
+  - it: deploys an Icingaweb2 deployment with extra env vars
+    values:
+      - required_values.yaml
+    release:
+      name: my-icinga
+    set:
+      icingaweb2:
+        auth:
+          admin_password:
+            value: insecurepassword
+        extraEnvVars:
+          - name: OTHER_ENV_VAR_FIRST
+            value: first
+          - name: OTHER_ENV_VAR_SECOND
+            value: second
+    asserts:
+      - containsDocument:
+          kind: Deployment
+          apiVersion: apps/v1
+      - equal:
+          path: metadata.name
+          value: my-icinga-icingaweb2
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: OTHER_ENV_VAR_FIRST
+            value: first
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: OTHER_ENV_VAR_SECOND
+            value: second
+
+  - it: deploys an Icingaweb2 deployment with extra from config map
+    values:
+      - required_values.yaml
+    release:
+      name: my-icinga
+    set:
+      icingaweb2:
+        auth:
+          admin_password:
+            value: insecurepassword
+        extraEnvVarsCM: "my-icinga-icingaweb2-env"
+    asserts:
+      - containsDocument:
+          kind: Deployment
+          apiVersion: apps/v1
+      - equal:
+          path: metadata.name
+          value: my-icinga-icingaweb2
+      - contains:
+          path: spec.template.spec.containers[0].envFrom
+          content:
+            configMapRef:
+              name: my-icinga-icingaweb2-env
+  
+  - it: deploys an Icingaweb2 deployment with extra from secret
+    values:
+      - required_values.yaml
+    release:
+      name: my-icinga
+    set:
+      icingaweb2:
+        auth:
+          admin_password:
+            value: insecurepassword
+        extraEnvVarsSecret: "my-icinga-icingaweb2-env"
+    asserts:
+      - containsDocument:
+          kind: Deployment
+          apiVersion: apps/v1
+      - equal:
+          path: metadata.name
+          value: my-icinga-icingaweb2
+      - contains:
+          path: spec.template.spec.containers[0].envFrom
+          content:
+            secretRef:
+              name: my-icinga-icingaweb2-env

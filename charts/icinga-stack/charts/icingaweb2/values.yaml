@@ -30,6 +30,10 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+#extraEnvVars: []
+#extraEnvVarsCM: ""
+#extraEnvVarsSecret: ""
+
 auth:
   type: db
   #resource: # Add the name of the db resource used by Icinga Web 2 here

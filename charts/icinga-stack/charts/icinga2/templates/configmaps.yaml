@@ -1,3 +1,4 @@
+{{- if .Values.enabled -}}
 ---
 kind: ConfigMap
 apiVersion: v1
@@ -267,3 +268,4 @@ data:
       facility = {{ .Values.features.syslog.facility | default "FacilityUser" }}
     }
   {{- end -}}
+{{- end -}}

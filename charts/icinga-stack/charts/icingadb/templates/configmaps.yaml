@@ -1,0 +1,10 @@
+{{- if .Values.extraEnvVarsCM -}}
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "icingadb.fullname" . }}-env
+  labels:
+    {{- include "icingadb.labels" . | nindent 4 }}
+data:
+{{- end -}}

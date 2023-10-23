@@ -319,6 +319,11 @@ icingadb:
     pullPolicy: IfNotPresent
 
   imagePullSecrets: []
+
+  #extraEnvVars: []
+  #extraEnvVarsCM: ""
+  #extraEnvVarsSecret: ""
+
   nameOverride: ""
   fullnameOverride: ""
 

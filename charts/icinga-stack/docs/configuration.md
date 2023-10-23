@@ -113,6 +113,9 @@ These values are used by the IcingaDB sub-chart.
 | `icingadb.image.tag` | Tag of the IcingaDB image | `string` | `1.1.0` |
 | `icingadb.image.pullPolicy` | Pull policy of the IcingaDB image | `string` | `IfNotPresent` |
 | `icingadb.imagePullSecrets` | Pull secrets of the IcingaDB image | `[]string` | `[]` |
+| `icingadb.extraEnvVars` | Array with extra environment variables to add to icingadb node | `[]` |
+| `icingadb.extraEnvVarsCM` | Name of existing ConfigMap containing extra env vars for icingadb node | `""` |
+| `icingadb.extraEnvVarsSecret` | Name of existing Secret containing extra env vars for icingadb node | `""` |
 | `icingadb.nameOverride` | Name override of the IcingaDB deployment | `string` | `""` |
 | `icingadb.fullnameOverride` | Fullname override of the IcingaDB deployment | `string` | `""` |
 | `icingadb.resources` | Resources of the IcingaDB deployment | `map[string]string` | `{}` |

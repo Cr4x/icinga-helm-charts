@@ -66,3 +66,75 @@ tests:
               secretKeyRef:
                 name: database-icingadb
                 key: password
+  
+  - it: deploys an IcingaDB deployment with extra env vars
+    values:
+      - required_values.yaml
+    release:
+      name: my-icinga
+    set:
+      icingadb:
+        extraEnvVars:
+          - name: OTHER_ENV_VAR_FIRST
+            value: first
+          - name: OTHER_ENV_VAR_SECOND
+            value: second
+    asserts:
+      - containsDocument:
+          kind: Deployment
+          apiVersion: apps/v1
+      - equal:
+          path: metadata.name
+          value: my-icinga-icingadb
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: OTHER_ENV_VAR_FIRST
+            value: first
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: OTHER_ENV_VAR_SECOND
+            value: second
+
+  - it: deploys an IcingaDB deployment with extra from config map
+    values:
+      - required_values.yaml
+    release:
+      name: my-icinga
+    set:
+      icingadb:
+        extraEnvVarsCM: "my-icinga-icingadb-env"
+    asserts:
+      - containsDocument:
+          kind: Deployment
+          apiVersion: apps/v1
+      - equal:
+          path: metadata.name
+          value: my-icinga-icingadb
+      - contains:
+          path: spec.template.spec.containers[0].envFrom
+          content:
+            configMapRef:
+              name: my-icinga-icingadb-env
+  
+  - it: deploys an IcingaDB deployment with extra from secret
+    values:
+      - required_values.yaml
+    release:
+      name: my-icinga
+    set:
+      icingadb:
+        extraEnvVarsSecret: "my-icinga-icingadb-env"
+    asserts:
+      - containsDocument:
+          kind: Deployment
+          apiVersion: apps/v1
+      - equal:
+          path: metadata.name
+          value: my-icinga-icingadb
+      - contains:
+          path: spec.template.spec.containers[0].envFrom
+          content:
+            secretRef:
+              name: my-icinga-icingadb-env

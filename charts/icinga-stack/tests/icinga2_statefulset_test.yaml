@@ -892,6 +892,18 @@ tests:
               - key: "influxdb-key-key"
                 path: "cert.key"
 
+  - it: does not deploy Icinga2 StatefulSet if enabled=false
+    values:
+      - required_values.yaml
+    set:
+      icinga2:
+        enabled: false
+    release:
+      name: my-icinga
+    asserts:
+      - hasDocuments:
+          count: 0
+
   - it: deploys an Icinga2 StatefulSet with extra env vars
     values:
       - required_values.yaml

@@ -1,3 +1,5 @@
+enabled: true
+
 image:
   repository: icinga/icinga2
   tag: 2.13.7

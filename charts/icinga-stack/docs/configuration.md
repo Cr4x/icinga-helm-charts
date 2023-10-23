@@ -59,6 +59,7 @@ These values are used by the Icinga2 sub-chart. For configuration of Icinga2's d
 
 | Parameter | Description | Data Type | Default |
 | --------- | ----------- | --------- | ------- |
+| `icinga2.enabled` | Whether or not to deploy Icinga2 | `boolean` | `true` |
 | `icinga2.image.repository` | Repository of the Icinga2 image | `string` | `icinga/icinga2` |
 | `icinga2.image.tag` | Tag of the Icinga2 image | `string` | `2.13.7` |
 | `icinga2.image.pullPolicy` | Pull policy of the Icinga2 image | `string` | `IfNotPresent` |

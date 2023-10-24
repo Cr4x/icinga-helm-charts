@@ -3,7 +3,7 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: {{ include "icingadb.fullname" . }}-env
+  name: {{ .Values.extraEnvVarsCM }}
   labels:
     {{- include "icingadb.labels" . | nindent 4 }}
 {{- end -}}

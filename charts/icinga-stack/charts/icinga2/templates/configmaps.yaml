@@ -267,12 +267,12 @@ data:
       facility = {{ .Values.features.syslog.facility | default "FacilityUser" }}
     }
   {{- end -}}
-{{- if .Values.extraEnvVarsCM -}}
+{{ if .Values.extraEnvVarsCM }}
 ---
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: {{ include "icinga2.fullname" . }}-env
+  name: {{ .Values.extraEnvVarsCM }}
   labels:
     {{- include "icinga2.labels" . | nindent 4 }}
 {{- end -}}

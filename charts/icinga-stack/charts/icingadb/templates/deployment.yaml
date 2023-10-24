@@ -38,7 +38,7 @@ spec:
             - name: ICINGADB_DATABASE_HOST
               value: {{ if .Values.global.databases.icingadb.enabled }} {{ .Release.Name }}-icingadb-database {{ else }} {{ .Values.global.databases.icingadb.host | quote }} {{ end }}
             - name: ICINGADB_DATABASE_PORT
-              value: {{ .Values.global.databases.icingadb.port | default "3306" | quote }}
+              value: {{ (include "icinga-helm.databasePort" .Values.global.databases.icingadb) | quote }}
             - name: ICINGADB_DATABASE_USER
               {{- if and .Values.global.databases.icingadb.username .Values.global.databases.icingadb.username.value }}
               value: {{ .Values.global.databases.icingadb.username.value | quote }}
@@ -63,6 +63,8 @@ spec:
               {{- end }}
             - name: ICINGADB_DATABASE_DATABASE
               value: {{ .Values.global.databases.icingadb.database | default "mysql" | quote }}
+            - name: ICINGADB_DATABASE_TYPE
+              value: {{ include "icinga-helm.databaseType" .Values.global.databases.icingadb.type | quote }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

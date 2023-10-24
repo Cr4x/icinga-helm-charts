@@ -523,6 +523,7 @@ global:
         value: # Add a password here
         secretKey: # Or specify secret key
       enabled: true
+      # type: mysql # either mysql (default) or pgsql
       # host: mariadb.example.com
       # port: 3306
       persistence:
@@ -545,6 +546,7 @@ global:
         value: # Add a password here
         secretKey: # Or specify secret key
       enabled: true
+      # type: mysql # either mysql (default) or pgsql
       # host: mariadb.example.com
       # port: 3306
       persistence:
@@ -567,6 +569,7 @@ global:
         value: # Add a password here
         secretKey: # Or specify secret key
       enabled: true
+      # type: mysql # either mysql (default) or pgsql
       # host: mariadb.example.com
       # port: 3306
       persistence:
@@ -589,6 +592,7 @@ global:
         value: # Add a password here
         secretKey: # Or specify secret key
       enabled: false
+      # type: mysql # either mysql (default) or pgsql
       # host: mariadb.example.com
       # port: 3306
       persistence:

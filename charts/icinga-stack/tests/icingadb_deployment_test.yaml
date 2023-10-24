@@ -66,3 +66,53 @@ tests:
               secretKeyRef:
                 name: database-icingadb
                 key: password
+
+  - it: deploys an IcingaDB deployment with pgsql database type
+    values:
+      - required_values.yaml
+    release:
+      name: my-icinga
+    set:
+      global:
+        databases:
+          icingadb:
+            username:
+              value: icingadb
+            password:
+              value: insecureicingadbpassword
+            type: pgsql
+    asserts:
+      - containsDocument:
+          kind: Deployment
+          apiVersion: apps/v1
+      - equal:
+          path: metadata.name
+          value: my-icinga-icingadb
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: ICINGADB_DATABASE_TYPE
+            value: pgsql
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: ICINGADB_DATABASE_PORT
+            value: "5432"
+
+  - it: fails an IcingaDB deployment with database type other than pgsql or mysql
+    values:
+      - required_values.yaml
+    release:
+      name: my-icinga
+    set:
+      global:
+        databases:
+          icingadb:
+            username:
+              value: icingadb
+            password:
+              value: insecureicingadbpassword
+            type: othervalue
+    asserts:
+      - failedTemplate:
+          errorMessage: type should be either mysql (default) or pgsql

@@ -205,6 +205,222 @@ tests:
       - failedTemplate:
           errorMessage: "director api user password not set. Set either .Values.global.api.users.director.password.value or .Values.global.api.users.credSecret and .Values.global.api.users.director.password.secretKey"
 
+  - it: deploys an Icingaweb2 deployment with psql as database type
+    values:
+      - required_values.yaml
+    release:
+      name: my-icinga
+    set:
+      icingaweb2:
+        auth:
+          admin_password:
+            value: insecurepassword
+        modules:
+          x509:
+            enabled: true
+      global:
+        api:
+          users:
+            director:
+              password:
+                value: director-insecurepassword
+            icingaweb:
+              password:
+                value: icingaweb-insecurepassword
+        databases:
+          director:
+            username:
+              value: director
+            password:
+              value: insecuredirectorpassword
+            type: pgsql
+          icingadb:
+            username:
+              value: icingadb
+            password:
+              value: insecureicingadbpassword
+            type: pgsql
+          icingaweb2:
+            username:
+              value: icingaweb2
+            password:
+              value: insecureicingaweb2password
+            type: pgsql
+          x509:
+            username:
+              value: icingax509
+            password:
+              value: insecureicingax509password
+            type: pgsql
+    asserts:
+      - containsDocument:
+          kind: Deployment
+          apiVersion: apps/v1
+      - equal:
+          path: metadata.name
+          value: my-icinga-icingaweb2
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: icingaweb.resources.directordb.db
+            value: pgsql
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: icingaweb.resources.icingadb.db
+            value: pgsql
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: icingaweb.resources.icingaweb2db.db
+            value: pgsql
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: icingaweb.resources.x509db.db
+            value: pgsql
+  
+  - it: fails an Icingaweb2 deployment with database type other than pgsql or mysql
+    values:
+      - required_values.yaml
+    release:
+      name: my-icinga
+    set:
+      icingaweb2:
+        auth:
+          admin_password:
+            value: insecurepassword
+        modules:
+          x509:
+            enabled: true
+      global:
+        api:
+          users:
+            director:
+              password:
+                value: director-insecurepassword
+            icingaweb:
+              password:
+                value: icingaweb-insecurepassword
+        databases:
+          icingaweb2:
+            username:
+              value: icingaweb2
+            password:
+              value: insecureicingaweb2password
+            type: othervalue
+    asserts:
+      - failedTemplate:
+          errorMessage: type should be either mysql (default) or pgsql
+
+  - it: deploys an Icingaweb2 deployment with psql as database type
+    values:
+      - required_values.yaml
+    release:
+      name: my-icinga
+    set:
+      icingaweb2:
+        auth:
+          admin_password:
+            value: insecurepassword
+        modules:
+          x509:
+            enabled: true
+      global:
+        api:
+          users:
+            director:
+              password:
+                value: director-insecurepassword
+            icingaweb:
+              password:
+                value: icingaweb-insecurepassword
+        databases:
+          director:
+            username:
+              value: director
+            password:
+              value: insecuredirectorpassword
+            type: pgsql
+          icingadb:
+            username:
+              value: icingadb
+            password:
+              value: insecureicingadbpassword
+            type: pgsql
+          icingaweb2:
+            username:
+              value: icingaweb2
+            password:
+              value: insecureicingaweb2password
+            type: pgsql
+          x509:
+            username:
+              value: icingax509
+            password:
+              value: insecureicingax509password
+            type: pgsql
+    asserts:
+      - containsDocument:
+          kind: Deployment
+          apiVersion: apps/v1
+      - equal:
+          path: metadata.name
+          value: my-icinga-icingaweb2
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: icingaweb.resources.directordb.db
+            value: pgsql
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: icingaweb.resources.icingadb.db
+            value: pgsql
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: icingaweb.resources.icingaweb2db.db
+            value: pgsql
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: icingaweb.resources.x509db.db
+            value: pgsql
+  
+  - it: fails an Icingaweb2 deployment with database type other than pgsql or mysql
+    values:
+      - required_values.yaml
+    release:
+      name: my-icinga
+    set:
+      icingaweb2:
+        auth:
+          admin_password:
+            value: insecurepassword
+        modules:
+          x509:
+            enabled: true
+      global:
+        api:
+          users:
+            director:
+              password:
+                value: director-insecurepassword
+            icingaweb:
+              password:
+                value: icingaweb-insecurepassword
+        databases:
+          icingaweb2:
+            username:
+              value: icingaweb2
+            password:
+              value: insecureicingaweb2password
+            type: othervalue
+    asserts:
+      - failedTemplate:
+          errorMessage: type should be either mysql (default) or pgsql
+
   - it: deploys an Icingaweb2 deployment with extra env vars
     values:
       - required_values.yaml

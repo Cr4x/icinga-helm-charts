@@ -60,3 +60,21 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{- define "icinga-helm.databaseType" -}}
+{{- if eq "pgsql" . }}
+{{- print "pgsql" }}
+{{- else if eq "mysql" (default "mysql" .) }}
+{{- print "mysql" }}
+{{- else }}
+{{- fail "type should be either mysql (default) or pgsql" }}
+{{- end }}
+{{- end }}
+
+{{- define "icinga-helm.databasePort" -}}
+{{- if eq "pgsql" (include "icinga-helm.databaseType" .type) }}
+{{- print 5432 }}
+{{- else }}
+{{- print 3306 }}
+{{- end }}
+{{- end }}
